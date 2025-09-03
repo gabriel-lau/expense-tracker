@@ -1,0 +1,36 @@
+# .gitignore for ASP.NET Core / C# backend
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# NuGet packages
+*.nupkg
+# NuGet restore
+.nuget/
+
+# Entity Framework
+Migrations/
+
+# Others
+*.vspscc
+*.vssscc
