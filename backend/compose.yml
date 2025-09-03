@@ -1,0 +1,22 @@
+# Use postgres/example user/password credentials
+version: "3.9"
+
+services:
+  expense-db:
+    image: postgres
+    restart: unless-stopped
+    shm_size: 128mb
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: expense_user
+      POSTGRES_PASSWORD: expense_password
+      POSTGRES_DB: expense_db
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
