@@ -2,7 +2,26 @@ import '../models/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseViewModel extends ChangeNotifier {
-  final List<Expense> _expenses = [];
+  final List<Expense> _expenses = [
+    Expense(
+      id: '1',
+      description: 'Groceries',
+      amount: 50.0,
+      date: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    Expense(
+      id: '2',
+      description: 'Electricity Bill',
+      amount: 75.5,
+      date: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    Expense(
+      id: '3',
+      description: 'Internet Subscription',
+      amount: 30.0,
+      date: DateTime.now().subtract(const Duration(days: 5)),
+    ),
+  ];
 
   List<Expense> get expenses => List.unmodifiable(_expenses);
 
