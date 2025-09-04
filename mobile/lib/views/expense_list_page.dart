@@ -14,17 +14,21 @@ class ExpenseListPage extends StatelessWidget {
         itemCount: vm.expenses.length,
         itemBuilder: (context, index) {
           final expense = vm.expenses[index];
-          return ListTile(
-            title: Text(expense.description),
-            subtitle: Text(
-              '\$${expense.amount.toStringAsFixed(2)} - ${expense.date.toLocal().toString().split(' ')[0]}',
+          return Dismissible(
+            key: Key(expense.id),
+            onDismissed: (diredtion) => vm.deleteExpense(expense.id),
+            child: ListTile(
+              title: Text(expense.description),
+              subtitle: Text(
+                '\$${expense.amount.toStringAsFixed(2)} - ${expense.date.toLocal().toString().split(' ')[0]}',
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ExpenseListPage()),
+                );
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ExpenseListPage()),
-              );
-            },
           );
         },
       ),
