@@ -25,6 +25,10 @@ class ExpenseViewModel extends ChangeNotifier {
 
   List<Expense> get expenses => List.unmodifiable(_expenses);
 
+  Future<void> loadExpenses() async {
+    notifyListeners();
+  }
+
   Future<void> addExpense(
     String description,
     double amount,
