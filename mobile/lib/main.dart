@@ -1,4 +1,7 @@
+import 'package:expense_tracker/viewmodels/expense_viewmodel.dart';
+import 'package:expense_tracker/views/expense_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,11 +12,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return ChangeNotifierProvider(
+      create: (_) => ExpenseViewModel(),
+      child: MaterialApp(
+        title: 'Expense Tracker',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: const ExpenseListPage(),
       ),
     );
   }
