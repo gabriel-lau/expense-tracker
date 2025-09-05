@@ -17,7 +17,16 @@ class ExpenseApiDataSource {
   }
 
   Future<Expense> createExpense(Expense expense) async {
-    return expense;
+    var expenseJson = json.encode(expense.toJson());
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/expenses'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: expenseJson,
+    );
+    if (response.statusCode == 201) {
+      return Expense.fromJson(json.decode(response.body));
+    }
+    throw Exception('Failed to create expense');
   }
 
   Future<Expense> updateExpense(Expense expense) async {

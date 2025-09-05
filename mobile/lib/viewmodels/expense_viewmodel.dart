@@ -30,7 +30,7 @@ class ExpenseViewModel extends ChangeNotifier {
   List<Expense> get expenses => List.unmodifiable(_expenses);
 
   Future<void> loadExpenses() async {
-    this.repository.getExpenses().then((loadedExpenses) {
+    await repository.getExpenses().then((loadedExpenses) {
       _expenses.clear();
       _expenses.addAll(loadedExpenses);
       notifyListeners();
@@ -43,13 +43,12 @@ class ExpenseViewModel extends ChangeNotifier {
     DateTime date,
   ) async {
     final newExpense = Expense(
-      id: DateTime.now().toIso8601String(),
       description: description,
       amount: amount,
       date: date,
     );
-
-    _expenses.add(newExpense);
+    await repository.createExpense(newExpense);
+    // _expenses.add(newExpense);
     notifyListeners();
   }
 

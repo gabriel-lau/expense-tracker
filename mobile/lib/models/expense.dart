@@ -1,11 +1,11 @@
 class Expense {
-  String id;
+  String? id;
   String description;
   double amount;
   DateTime date;
 
   Expense({
-    required this.id,
+    this.id,
     required this.description,
     required this.amount,
     required this.date,
@@ -13,7 +13,7 @@ class Expense {
 
   factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
-      id: json['id'] as String,
+      id: json['id'] as String?,
       description: json['description'] as String,
       amount: (json['amount'] as num).toDouble(),
       date: DateTime.parse(json['date'] as String),
@@ -21,11 +21,21 @@ class Expense {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
+    // Manually format to ISO8601 without milliseconds
+    String twoDigits(int n) {
+      if (n >= 10) return "${n}";
+      return "0${n}";
+    }
+
+    final utc = date.toUtc();
+    final isoString =
+        '${utc.year}-${twoDigits(utc.month)}-${twoDigits(utc.day)}T'
+        '${twoDigits(utc.hour)}:${twoDigits(utc.minute)}:${twoDigits(utc.second)}Z';
+    return <String, dynamic>{
+      if (id != null) 'id': id,
       'description': description,
       'amount': amount,
-      'date': date.toIso8601String(),
+      'date': isoString,
     };
   }
 }

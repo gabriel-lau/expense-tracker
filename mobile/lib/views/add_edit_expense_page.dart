@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/expense_viewmodel.dart';
 
@@ -54,7 +55,7 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
               ),
               Row(
                 children: [
-                  Text('Date: ${_date.toLocal().toString().split(' ')[0]}'),
+                  Text('Date: ${DateFormat('dd/MM/yyyy').format(_date)}'),
                   TextButton(
                     child: const Text('Pick Date'),
                     onPressed: () async {

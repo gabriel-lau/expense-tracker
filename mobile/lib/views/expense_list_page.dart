@@ -36,8 +36,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           itemBuilder: (context, index) {
             final expense = vm.expenses[index];
             return Dismissible(
-              key: Key(expense.id),
-              onDismissed: (direction) => vm.deleteExpense(expense.id),
+              key: Key(expense.id!),
+              onDismissed: (direction) => vm.deleteExpense(expense.id!),
               child: ListTile(
                 title: Text(expense.description),
                 subtitle: Text(
