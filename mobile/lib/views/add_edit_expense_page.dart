@@ -1,3 +1,4 @@
+import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,18 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
   final _formKey = GlobalKey<FormState>();
   late String _description;
   late double _amount;
-  DateTime _date = DateTime.now();
+  late DateTime _date;
+
+  @override
+  void initState() {
+    super.initState();
+    final vm = Provider.of<ExpenseViewModel>(context, listen: false);
+    final isEdit = widget.expenseId != null;
+    final expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
+    _date =
+        expense?.date.toLocal() ??
+        DateTime.now(); // There has to be a better way to do this
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +73,15 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                     onPressed: () async {
                       final picked = await showDatePicker(
                         context: context,
-                        initialDate: _date,
+                        initialDate: _date.toLocal(),
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                       );
-                      if (picked != null) _date = picked;
+                      if (picked != null) {
+                        setState(() {
+                          _date = picked;
+                        });
+                      }
                     },
                   ),
                 ],
