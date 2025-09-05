@@ -15,7 +15,7 @@ class ExpenseRepositoryApiImpl implements ExpenseRepository {
       dataSource.createExpense(expense);
 
   @override
-  Future<Expense> updateExpense(Expense expense) =>
+  Future<void> updateExpense(Expense expense) =>
       dataSource.updateExpense(expense);
 
   @override

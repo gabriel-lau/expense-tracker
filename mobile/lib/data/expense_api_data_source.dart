@@ -17,11 +17,10 @@ class ExpenseApiDataSource {
   }
 
   Future<Expense> createExpense(Expense expense) async {
-    var expenseJson = json.encode(expense.toJson());
     final response = await http.post(
       Uri.parse('$baseUrl/api/expenses'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: expenseJson,
+      body: json.encode(expense.toJson()),
     );
     if (response.statusCode == 201) {
       return Expense.fromJson(json.decode(response.body));
@@ -29,8 +28,20 @@ class ExpenseApiDataSource {
     throw Exception('Failed to create expense');
   }
 
-  Future<Expense> updateExpense(Expense expense) async {
-    return expense;
+  Future<void> updateExpense(Expense expense) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/api/expenses/${expense.id}'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: json.encode(expense.toJson()),
+    );
+    if (response.statusCode == 204) {
+      return;
+    } else if (response.statusCode == 400) {
+      throw Exception('Invalid expense data');
+    } else if (response.statusCode == 404) {
+      throw Exception('Expense not found');
+    }
+    throw Exception('Failed to update expense');
   }
 
   Future<void> deleteExpense(String id) async {

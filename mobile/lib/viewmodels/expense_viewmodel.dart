@@ -64,7 +64,8 @@ class ExpenseViewModel extends ChangeNotifier {
       amount: amount,
       date: date,
     );
-    _expenses[_expenses.indexWhere((e) => e.id == id)] = expense;
+    await repository.updateExpense(expense);
+    // _expenses[_expenses.indexWhere((e) => e.id == id)] = expense;
     notifyListeners();
   }
 
