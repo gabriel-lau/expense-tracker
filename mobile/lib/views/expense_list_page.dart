@@ -40,8 +40,9 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               onDismissed: (direction) => vm.deleteExpense(expense.id!),
               child: ListTile(
                 title: Text(expense.description),
-                subtitle: Text(
-                  '\$${expense.amount.toStringAsFixed(2)} - ${DateFormat('dd/MM/yyyy').format(expense.date)}',
+                subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
+                trailing: Text(
+                  DateFormat('dd/MM/yyyy').format(expense.date.toLocal()),
                 ),
                 onTap: () {
                   Navigator.push(

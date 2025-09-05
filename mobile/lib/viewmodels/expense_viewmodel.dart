@@ -1,31 +1,11 @@
 import 'package:expense_tracker/repositories/expense_repository.dart';
-
 import '../models/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseViewModel extends ChangeNotifier {
   final ExpenseRepository repository;
   ExpenseViewModel({required this.repository});
-  final List<Expense> _expenses = [
-    // Expense(
-    //   id: '1',
-    //   description: 'Groceries',
-    //   amount: 50.0,
-    //   date: DateTime.now().subtract(const Duration(days: 1)),
-    // ),
-    // Expense(
-    //   id: '2',
-    //   description: 'Electricity Bill',
-    //   amount: 75.5,
-    //   date: DateTime.now().subtract(const Duration(days: 3)),
-    // ),
-    // Expense(
-    //   id: '3',
-    //   description: 'Internet Subscription',
-    //   amount: 30.0,
-    //   date: DateTime.now().subtract(const Duration(days: 5)),
-    // ),
-  ];
+  final List<Expense> _expenses = [];
 
   List<Expense> get expenses => List.unmodifiable(_expenses);
 
@@ -33,6 +13,7 @@ class ExpenseViewModel extends ChangeNotifier {
     await repository.getExpenses().then((loadedExpenses) {
       _expenses.clear();
       _expenses.addAll(loadedExpenses);
+      _expenses.sort((a, b) => b.date.compareTo(a.date));
       notifyListeners();
     });
   }
@@ -49,8 +30,6 @@ class ExpenseViewModel extends ChangeNotifier {
     );
     await repository.createExpense(newExpense);
     await loadExpenses();
-
-    // _expenses.add(newExpense);
     notifyListeners();
   }
 
@@ -67,7 +46,6 @@ class ExpenseViewModel extends ChangeNotifier {
       date: date,
     );
     await repository.updateExpense(expense);
-    // _expenses[_expenses.indexWhere((e) => e.id == id)] = expense;
     await loadExpenses();
     notifyListeners();
   }
