@@ -48,6 +48,8 @@ class ExpenseViewModel extends ChangeNotifier {
       date: date,
     );
     await repository.createExpense(newExpense);
+    await loadExpenses();
+
     // _expenses.add(newExpense);
     notifyListeners();
   }
@@ -66,11 +68,13 @@ class ExpenseViewModel extends ChangeNotifier {
     );
     await repository.updateExpense(expense);
     // _expenses[_expenses.indexWhere((e) => e.id == id)] = expense;
+    await loadExpenses();
     notifyListeners();
   }
 
   Future<void> deleteExpense(String id) async {
-    _expenses.removeWhere((e) => e.id == id);
+    await repository.deleteExpense(id);
+    await loadExpenses();
     notifyListeners();
   }
 

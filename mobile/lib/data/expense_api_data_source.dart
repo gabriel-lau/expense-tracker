@@ -45,6 +45,12 @@ class ExpenseApiDataSource {
   }
 
   Future<void> deleteExpense(String id) async {
-    return;
+    final response = await http.delete(Uri.parse('$baseUrl/api/expenses/$id'));
+    if (response.statusCode == 204) {
+      return;
+    } else if (response.statusCode == 404) {
+      throw Exception('Expense not found');
+    }
+    throw Exception('Failed to delete expense');
   }
 }
