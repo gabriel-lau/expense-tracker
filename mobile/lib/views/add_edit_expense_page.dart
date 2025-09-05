@@ -20,23 +20,23 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
   late String _description;
   late double _amount;
   late DateTime _date;
+  late bool isEdit;
+  late Expense? expense;
 
   @override
   void initState() {
     super.initState();
     final vm = Provider.of<ExpenseViewModel>(context, listen: false);
-    final isEdit = widget.expenseId != null;
-    final expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
-    _date =
-        expense?.date.toLocal() ??
-        DateTime.now(); // There has to be a better way to do this
+    isEdit = widget.expenseId != null;
+    expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
+    _date = expense?.date.toLocal() ?? DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ExpenseViewModel>(context);
-    final isEdit = widget.expenseId != null;
-    final expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
+    // final isEdit = widget.expenseId != null;
+    // final expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
 
     return Scaffold(
       appBar: AppBar(title: Text(isEdit ? 'Edit Expense' : 'Add Expense')),
