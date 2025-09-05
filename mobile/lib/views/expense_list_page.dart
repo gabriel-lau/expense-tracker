@@ -4,8 +4,23 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart'; // Provider with ChangeNotifier - Automatic rebuilds of UI on data change so we don't have to use setState
 import '../viewmodels/expense_viewmodel.dart';
 
-class ExpenseListPage extends StatelessWidget {
+class ExpenseListPage extends StatefulWidget {
   const ExpenseListPage({super.key});
+
+  @override
+  State<ExpenseListPage> createState() => _ExpenseListPageState();
+}
+
+class _ExpenseListPageState extends State<ExpenseListPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Only load expenses once when the page is first created
+    Future.microtask(() {
+      final vm = Provider.of<ExpenseViewModel>(context, listen: false);
+      vm.loadExpenses();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +29,7 @@ class ExpenseListPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Expenses')),
       body: RefreshIndicator(
         onRefresh: () async {
-          return Future<void>.delayed(const Duration(seconds: 3));
+          return await vm.loadExpenses();
         },
         child: ListView.builder(
           itemCount: vm.expenses.length,
