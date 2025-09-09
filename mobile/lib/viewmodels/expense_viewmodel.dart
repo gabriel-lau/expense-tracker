@@ -5,29 +5,34 @@ import 'package:flutter/material.dart';
 class ExpenseViewModel extends ChangeNotifier {
   final ExpenseRepository repository;
   ExpenseViewModel({required this.repository});
+
   final List<Expense> _expenses = [];
-  String? errorMessage;
+  String? _errorMessage;
   bool _isLoading = false;
 
-  bool get isLoading => _isLoading;
-
   List<Expense> get expenses => List.unmodifiable(_expenses);
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+
+  Future<void> _refreshExpenses() async {
+    final loadedExpenses = await repository.getExpenses();
+    _expenses.clear();
+    _expenses.addAll(loadedExpenses);
+    _expenses.sort((a, b) => b.date.compareTo(a.date));
+  }
 
   Future<void> loadExpenses() async {
     _isLoading = true;
     notifyListeners();
     try {
-      errorMessage = null;
-      final loadedExpenses = await repository.getExpenses();
-      _expenses.clear();
-      _expenses.addAll(loadedExpenses);
-      _expenses.sort((a, b) => b.date.compareTo(a.date));
+      _errorMessage = null;
+      await _refreshExpenses();
     } catch (e) {
-      errorMessage = 'Failed to load expenses. Please check your connection.';
+      _errorMessage = 'Failed to load expenses. Please check your connection.';
     } finally {
       _isLoading = false;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> addExpense(
@@ -38,21 +43,20 @@ class ExpenseViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      errorMessage = null;
+      _errorMessage = null;
       final newExpense = Expense(
         description: description,
         amount: amount,
         date: date,
       );
       await repository.createExpense(newExpense);
-      await loadExpenses();
+      await _refreshExpenses();
     } catch (e) {
-      errorMessage = 'Failed to add expense. Please check your connection.';
-      notifyListeners();
+      _errorMessage = 'Failed to add expense. Please check your connection.';
     } finally {
       _isLoading = false;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> editExpense(
@@ -64,7 +68,7 @@ class ExpenseViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      errorMessage = null;
+      _errorMessage = null;
       final expense = Expense(
         id: id,
         description: description,
@@ -72,30 +76,28 @@ class ExpenseViewModel extends ChangeNotifier {
         date: date,
       );
       await repository.updateExpense(expense);
-      await loadExpenses();
+      await _refreshExpenses();
     } catch (e) {
-      errorMessage = 'Failed to edit expense. Please check your connection.';
-      notifyListeners();
+      _errorMessage = 'Failed to edit expense. Please check your connection.';
     } finally {
       _isLoading = false;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> deleteExpense(String id) async {
     _isLoading = true;
     notifyListeners();
     try {
-      errorMessage = null;
+      _errorMessage = null;
       await repository.deleteExpense(id);
-      await loadExpenses();
+      await _refreshExpenses();
     } catch (e) {
-      errorMessage = 'Failed to delete expense. Please check your connection.';
-      notifyListeners();
+      _errorMessage = 'Failed to delete expense. Please check your connection.';
     } finally {
       _isLoading = false;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Expense? getExpenseById(String id) {
