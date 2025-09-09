@@ -1,12 +1,14 @@
 using backend.Data;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Add controllers 
 builder.Services.AddControllers();
+
+// Configure PostgreSQL with Entity Framework Core
 builder.Services.AddDbContext<ExpenseDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ExpenseDb")));
 

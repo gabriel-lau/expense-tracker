@@ -59,6 +59,7 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                   if (value == null || value.isEmpty) return 'Enter amount';
                   if (double.tryParse(value) == null)
                     return 'Enter valid number';
+                  if (double.parse(value) < 0) return 'Amount must be positive';
                   return null;
                 },
                 onSaved: (value) => _amount = double.parse(value!),

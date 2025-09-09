@@ -27,6 +27,9 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Expense>> CreateExpense(Expense expense)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             expense.Id = Guid.NewGuid();
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
@@ -37,9 +40,11 @@ namespace backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExpense(Guid id, Expense expense)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (id != expense.Id)
                 return BadRequest();
-
             _context.Entry(expense).State = EntityState.Modified;
 
             try
