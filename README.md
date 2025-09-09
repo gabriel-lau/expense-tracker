@@ -29,7 +29,7 @@ docker-compose up --build
 
 If you prefer to run the backend without Docker, follow these steps:
 
-1. Make sure you have [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) and [PostgreSQL](https://www.postgresql.org/download/) installed on your machine.
+1. Make sure you have [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) and [PostgreSQL](https://www.postgresql.org/download/) installed on your machine.
 2. Create a PostgreSQL database with the name `expense_db` and update the connection string in `/backend/appsettings.Development.json`.
 
 ```json
