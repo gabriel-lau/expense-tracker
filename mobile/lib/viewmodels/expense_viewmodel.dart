@@ -6,16 +6,21 @@ class ExpenseViewModel extends ChangeNotifier {
   final ExpenseRepository repository;
   ExpenseViewModel({required this.repository});
   final List<Expense> _expenses = [];
+  String? errorMessage; // Add this line
 
   List<Expense> get expenses => List.unmodifiable(_expenses);
 
   Future<void> loadExpenses() async {
-    await repository.getExpenses().then((loadedExpenses) {
+    try {
+      errorMessage = null;
+      final loadedExpenses = await repository.getExpenses();
       _expenses.clear();
       _expenses.addAll(loadedExpenses);
       _expenses.sort((a, b) => b.date.compareTo(a.date));
-      notifyListeners();
-    });
+    } catch (e) {
+      errorMessage = 'Failed to load expenses. Please check your connection.';
+    }
+    notifyListeners();
   }
 
   Future<void> addExpense(
@@ -23,14 +28,19 @@ class ExpenseViewModel extends ChangeNotifier {
     double amount,
     DateTime date,
   ) async {
-    final newExpense = Expense(
-      description: description,
-      amount: amount,
-      date: date,
-    );
-    await repository.createExpense(newExpense);
-    await loadExpenses();
-    notifyListeners();
+    try {
+      errorMessage = null;
+      final newExpense = Expense(
+        description: description,
+        amount: amount,
+        date: date,
+      );
+      await repository.createExpense(newExpense);
+      await loadExpenses();
+    } catch (e) {
+      errorMessage = 'Failed to add expense. Please check your connection.';
+      notifyListeners();
+    }
   }
 
   Future<void> editExpense(
@@ -39,21 +49,31 @@ class ExpenseViewModel extends ChangeNotifier {
     double amount,
     DateTime date,
   ) async {
-    final expense = Expense(
-      id: id,
-      description: description,
-      amount: amount,
-      date: date,
-    );
-    await repository.updateExpense(expense);
-    await loadExpenses();
-    notifyListeners();
+    try {
+      errorMessage = null;
+      final expense = Expense(
+        id: id,
+        description: description,
+        amount: amount,
+        date: date,
+      );
+      await repository.updateExpense(expense);
+      await loadExpenses();
+    } catch (e) {
+      errorMessage = 'Failed to edit expense. Please check your connection.';
+      notifyListeners();
+    }
   }
 
   Future<void> deleteExpense(String id) async {
-    await repository.deleteExpense(id);
-    await loadExpenses();
-    notifyListeners();
+    try {
+      errorMessage = null;
+      await repository.deleteExpense(id);
+      await loadExpenses();
+    } catch (e) {
+      errorMessage = 'Failed to delete expense. Please check your connection.';
+      notifyListeners();
+    }
   }
 
   Expense? getExpenseById(String id) {

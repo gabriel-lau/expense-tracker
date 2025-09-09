@@ -35,8 +35,6 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ExpenseViewModel>(context);
-    // final isEdit = widget.expenseId != null;
-    // final expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
 
     return Scaffold(
       appBar: AppBar(title: Text(isEdit ? 'Edit Expense' : 'Add Expense')),

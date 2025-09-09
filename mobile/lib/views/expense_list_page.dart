@@ -25,6 +25,14 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ExpenseViewModel>(context);
+    // Show error message if exists
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (vm.errorMessage != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(vm.errorMessage!)));
+      }
+    });
     return Scaffold(
       appBar: AppBar(title: const Text('Expenses')),
       body: RefreshIndicator(
