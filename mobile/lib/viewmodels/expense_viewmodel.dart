@@ -6,11 +6,16 @@ class ExpenseViewModel extends ChangeNotifier {
   final ExpenseRepository repository;
   ExpenseViewModel({required this.repository});
   final List<Expense> _expenses = [];
-  String? errorMessage; // Add this line
+  String? errorMessage;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   List<Expense> get expenses => List.unmodifiable(_expenses);
 
   Future<void> loadExpenses() async {
+    _isLoading = true;
+    notifyListeners();
     try {
       errorMessage = null;
       final loadedExpenses = await repository.getExpenses();
@@ -19,8 +24,10 @@ class ExpenseViewModel extends ChangeNotifier {
       _expenses.sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
       errorMessage = 'Failed to load expenses. Please check your connection.';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> addExpense(
@@ -28,6 +35,8 @@ class ExpenseViewModel extends ChangeNotifier {
     double amount,
     DateTime date,
   ) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       errorMessage = null;
       final newExpense = Expense(
@@ -40,6 +49,9 @@ class ExpenseViewModel extends ChangeNotifier {
     } catch (e) {
       errorMessage = 'Failed to add expense. Please check your connection.';
       notifyListeners();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -49,6 +61,8 @@ class ExpenseViewModel extends ChangeNotifier {
     double amount,
     DateTime date,
   ) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       errorMessage = null;
       final expense = Expense(
@@ -62,16 +76,24 @@ class ExpenseViewModel extends ChangeNotifier {
     } catch (e) {
       errorMessage = 'Failed to edit expense. Please check your connection.';
       notifyListeners();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> deleteExpense(String id) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       errorMessage = null;
       await repository.deleteExpense(id);
       await loadExpenses();
     } catch (e) {
       errorMessage = 'Failed to delete expense. Please check your connection.';
+      notifyListeners();
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }

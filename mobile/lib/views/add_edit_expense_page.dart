@@ -20,16 +20,16 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
   late String _description;
   late double _amount;
   late DateTime _date;
-  late bool isEdit;
-  late Expense? expense;
+  late bool _isEdit;
+  late Expense? _expense;
 
   @override
   void initState() {
     super.initState();
     final vm = Provider.of<ExpenseViewModel>(context, listen: false);
-    isEdit = widget.expenseId != null;
-    expense = isEdit ? vm.getExpenseById(widget.expenseId!) : null;
-    _date = expense?.date.toLocal() ?? DateTime.now();
+    _isEdit = widget.expenseId != null;
+    _expense = _isEdit ? vm.getExpenseById(widget.expenseId!) : null;
+    _date = _expense?.date.toLocal() ?? DateTime.now();
   }
 
   @override
@@ -37,7 +37,7 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
     final vm = Provider.of<ExpenseViewModel>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(isEdit ? 'Edit Expense' : 'Add Expense')),
+      appBar: AppBar(title: Text(_isEdit ? 'Edit Expense' : 'Add Expense')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -45,14 +45,14 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
           child: Column(
             children: [
               TextFormField(
-                initialValue: expense?.description ?? '',
+                initialValue: _expense?.description ?? '',
                 decoration: const InputDecoration(labelText: 'Description'),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Enter description' : null,
                 onSaved: (value) => _description = value!,
               ),
               TextFormField(
-                initialValue: expense?.amount.toString() ?? '',
+                initialValue: _expense?.amount.toString() ?? '',
                 decoration: const InputDecoration(labelText: 'Amount'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -86,11 +86,11 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                child: Text(isEdit ? 'Save' : 'Add'),
+                child: Text(_isEdit ? 'Save' : 'Add'),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (isEdit) {
+                    if (_isEdit) {
                       vm.editExpense(
                         widget.expenseId!,
                         _description,

@@ -35,35 +35,46 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     });
     return Scaffold(
       appBar: AppBar(title: const Text('Expenses')),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          return await vm.loadExpenses();
-        },
-        child: ListView.builder(
-          itemCount: vm.expenses.length,
-          itemBuilder: (context, index) {
-            final expense = vm.expenses[index];
-            return Dismissible(
-              key: Key(expense.id!),
-              onDismissed: (direction) => vm.deleteExpense(expense.id!),
-              child: ListTile(
-                title: Text(expense.description),
-                subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
-                trailing: Text(
-                  DateFormat('dd/MM/yyyy').format(expense.date.toLocal()),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => AddEditExpensePage(expenseId: expense.id),
+      body: Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: () {
+              vm.loadExpenses();
+              return Future.value();
+            },
+            child: ListView.builder(
+              itemCount: vm.expenses.length,
+              itemBuilder: (context, index) {
+                final expense = vm.expenses[index];
+                return Dismissible(
+                  key: Key(expense.id!),
+                  onDismissed: (direction) => vm.deleteExpense(expense.id!),
+                  child: ListTile(
+                    title: Text(expense.description),
+                    subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
+                    trailing: Text(
+                      DateFormat('dd/MM/yyyy').format(expense.date.toLocal()),
                     ),
-                  );
-                },
-              ),
-            );
-          },
-        ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              AddEditExpensePage(expenseId: expense.id),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+          if (vm.isLoading)
+            Container(
+              color: Colors.white.withValues(alpha: 0.75),
+              child: const Center(child: CircularProgressIndicator()),
+            ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
