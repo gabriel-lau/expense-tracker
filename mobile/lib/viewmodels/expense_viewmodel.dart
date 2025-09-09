@@ -49,6 +49,7 @@ class ExpenseViewModel extends ChangeNotifier {
         amount: amount,
         date: date,
       );
+      // _expenses.add(newExpense);
       await repository.createExpense(newExpense);
       await _refreshExpenses();
     } catch (e) {
@@ -75,6 +76,10 @@ class ExpenseViewModel extends ChangeNotifier {
         amount: amount,
         date: date,
       );
+      // final index = _expenses.indexWhere((e) => e.id == id);
+      // if (index != -1) {
+      //   _expenses[index] = expense;
+      // }
       await repository.updateExpense(expense);
       await _refreshExpenses();
     } catch (e) {
@@ -90,6 +95,7 @@ class ExpenseViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       _errorMessage = null;
+      // _expenses.removeWhere((e) => e.id == id);
       await repository.deleteExpense(id);
       await _refreshExpenses();
     } catch (e) {

@@ -73,8 +73,16 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                       final picked = await showDatePicker(
                         context: context,
                         initialDate: _date.toLocal(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
+                        firstDate: DateTime(
+                          _date.year - 1,
+                          _date.month,
+                          _date.day,
+                        ),
+                        lastDate: DateTime(
+                          _date.year + 1,
+                          _date.month,
+                          _date.day,
+                        ),
                       );
                       if (picked != null) {
                         setState(() {

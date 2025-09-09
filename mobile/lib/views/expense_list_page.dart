@@ -47,7 +47,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               itemBuilder: (context, index) {
                 final expense = vm.expenses[index];
                 return Dismissible(
-                  key: Key(expense.id!),
+                  key: UniqueKey(),
                   onDismissed: (direction) => vm.deleteExpense(expense.id!),
                   child: ListTile(
                     title: Text(expense.description),
@@ -71,8 +71,9 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           ),
           if (vm.isLoading)
             Container(
-              color: Colors.white.withValues(alpha: 0.75),
-              child: const Center(child: CircularProgressIndicator()),
+              child: const Center(
+                child: Card(child: CircularProgressIndicator()),
+              ),
             ),
         ],
       ),
