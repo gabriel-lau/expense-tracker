@@ -14,6 +14,7 @@ namespace backend.Models
         public decimal Amount { get; set; }
         [Required]
         [UTCFormat(ErrorMessage = "Date must be in UTC format.")]
+        [DateRange(ErrorMessage = "Date must be within one year from today.")]
         public DateTime Date { get; set; }
     }
 }
