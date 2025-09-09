@@ -34,63 +34,49 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
       }
     });
     return Scaffold(
-      appBar: AppBar(title: const Text('Expenses')),
-      body: Stack(
-        children: [
-          RefreshIndicator(
-            onRefresh: () {
-              vm.loadExpenses();
-              return Future.value();
-            },
-            child: ListView.builder(
-              itemCount: vm.expenses.length,
-              itemBuilder: (context, index) {
-                final expense = vm.expenses[index];
-                return Dismissible(
-                  key: UniqueKey(),
-                  onDismissed: (direction) => vm.deleteExpense(expense.id!),
-                  child: ListTile(
-                    title: Text(expense.description),
-                    subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
-                    trailing: Text(
-                      DateFormat('dd/MM/yyyy').format(expense.date.toLocal()),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              AddEditExpensePage(expenseId: expense.id),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          if (vm.isLoading)
-            Container(
-              child: const Center(
-                child: Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text('Loading...'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ],
+      appBar: AppBar(
+        title: const Text('Expenses'),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(4.0),
+          child: vm.isLoading
+              ? LinearProgressIndicator(
+                  value: vm.isLoading ? null : 0.0, // Show if isLoading is true
+                )
+              : SizedBox.shrink(),
+        ),
       ),
+      body: RefreshIndicator(
+        onRefresh: () {
+          vm.loadExpenses();
+          return Future.value();
+        },
+        child: ListView.builder(
+          itemCount: vm.expenses.length,
+          itemBuilder: (context, index) {
+            final expense = vm.expenses[index];
+            return Dismissible(
+              key: UniqueKey(),
+              onDismissed: (direction) => vm.deleteExpense(expense.id!),
+              child: ListTile(
+                title: Text(expense.description),
+                subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
+                trailing: Text(
+                  DateFormat('dd/MM/yyyy').format(expense.date.toLocal()),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => AddEditExpensePage(expenseId: expense.id),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
