@@ -1,0 +1,27 @@
+name: Backend Docker Compose Build
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - 'backend/**'
+    pull_request:
+        paths:
+            - 'backend/**'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./backend
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Build Docker Compose services
+              run: docker compose build
