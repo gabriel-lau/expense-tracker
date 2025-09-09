@@ -72,7 +72,21 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           if (vm.isLoading)
             Container(
               child: const Center(
-                child: Card(child: CircularProgressIndicator()),
+                child: Card(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text('Loading...'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
         ],

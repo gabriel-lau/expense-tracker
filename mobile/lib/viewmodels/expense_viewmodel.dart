@@ -14,6 +14,7 @@ class ExpenseViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // Update expenses list by retrieving from backend
   Future<void> _refreshExpenses() async {
     final loadedExpenses = await repository.getExpenses();
     _expenses.clear();
@@ -26,7 +27,10 @@ class ExpenseViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       _errorMessage = null;
-      await _refreshExpenses();
+      final loadedExpenses = await repository.getExpenses();
+      _expenses.clear();
+      _expenses.addAll(loadedExpenses);
+      _expenses.sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
       _errorMessage = 'Failed to load expenses. Please check your connection.';
     } finally {
@@ -40,24 +44,33 @@ class ExpenseViewModel extends ChangeNotifier {
     double amount,
     DateTime date,
   ) async {
+    // Optimistically add the expense
     _isLoading = true;
+    Expense tempExpense = Expense(
+      description: description,
+      amount: amount,
+      date: date,
+    );
+    _expenses.add(tempExpense);
+    _expenses.sort((a, b) => b.date.compareTo(a.date));
     notifyListeners();
+
     try {
+      // Create the expense in the backend
       _errorMessage = null;
-      final newExpense = Expense(
-        description: description,
-        amount: amount,
-        date: date,
-      );
-      // _expenses.add(newExpense);
-      await repository.createExpense(newExpense);
-      await _refreshExpenses();
+      Expense createdExpense = await repository.createExpense(tempExpense);
+      // Replace tempExpense with createdExpense (with backend id)
+      int idx = _expenses.indexOf(tempExpense);
+      _expenses[idx] = createdExpense;
+      _expenses.sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
+      // Revert the optimistic update if creation failed
       _errorMessage = 'Failed to add expense. Please check your connection.';
+      _expenses.remove(tempExpense);
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> editExpense(
@@ -66,44 +79,55 @@ class ExpenseViewModel extends ChangeNotifier {
     double amount,
     DateTime date,
   ) async {
+    // Optimistically update the expense
     _isLoading = true;
+    final index = _expenses.indexWhere((e) => e.id == id);
+    final oldExpense = _expenses[index];
+    final updatedExpense = Expense(
+      id: id,
+      description: description,
+      amount: amount,
+      date: date,
+    );
+    _expenses[index] = updatedExpense;
+    _expenses.sort((a, b) => b.date.compareTo(a.date));
     notifyListeners();
+
     try {
+      // Update the expense in the backend
       _errorMessage = null;
-      final expense = Expense(
-        id: id,
-        description: description,
-        amount: amount,
-        date: date,
-      );
-      // final index = _expenses.indexWhere((e) => e.id == id);
-      // if (index != -1) {
-      //   _expenses[index] = expense;
-      // }
-      await repository.updateExpense(expense);
-      await _refreshExpenses();
+      await repository.updateExpense(updatedExpense);
     } catch (e) {
+      // Revert the optimistic update if update failed
       _errorMessage = 'Failed to edit expense. Please check your connection.';
+      _expenses[index] = oldExpense;
+      _expenses.sort((a, b) => b.date.compareTo(a.date));
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> deleteExpense(String id) async {
+    // Optimistically remove the expense
     _isLoading = true;
+    final index = _expenses.indexWhere((e) => e.id == id);
+    Expense? removedExpense;
+    removedExpense = _expenses.removeAt(index);
     notifyListeners();
+
     try {
+      // Delete the expense in the backend
       _errorMessage = null;
-      // _expenses.removeWhere((e) => e.id == id);
       await repository.deleteExpense(id);
-      await _refreshExpenses();
     } catch (e) {
+      // Revert the optimistic update if deletion failed
       _errorMessage = 'Failed to delete expense. Please check your connection.';
+      _expenses.insert(index, removedExpense);
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Expense? getExpenseById(String id) {

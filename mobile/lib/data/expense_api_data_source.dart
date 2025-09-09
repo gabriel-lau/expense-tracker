@@ -8,6 +8,8 @@ class ExpenseApiDataSource {
   ExpenseApiDataSource({required this.baseUrl});
 
   Future<List<Expense>> fetchExpenses() async {
+    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+
     final response = await http.get(Uri.parse('$baseUrl/api/expenses'));
     if (response.statusCode == 200) {
       final List data = json.decode(response.body);
@@ -17,6 +19,8 @@ class ExpenseApiDataSource {
   }
 
   Future<Expense> createExpense(Expense expense) async {
+    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+
     final response = await http.post(
       Uri.parse('$baseUrl/api/expenses'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
@@ -29,6 +33,8 @@ class ExpenseApiDataSource {
   }
 
   Future<void> updateExpense(Expense expense) async {
+    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+
     final response = await http.put(
       Uri.parse('$baseUrl/api/expenses/${expense.id}'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
@@ -45,6 +51,8 @@ class ExpenseApiDataSource {
   }
 
   Future<void> deleteExpense(String id) async {
+    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+
     final response = await http.delete(Uri.parse('$baseUrl/api/expenses/$id'));
     if (response.statusCode == 204) {
       return;

@@ -3,7 +3,7 @@ import '../data/expense_api_data_source.dart';
 import 'expense_repository.dart';
 
 class ExpenseRepositoryApiImpl implements ExpenseRepository {
-  final ExpenseApiDataSource dataSource;
+  final ExpenseApiDataSource dataSource; // Dependency Injection
 
   ExpenseRepositoryApiImpl(this.dataSource);
 
