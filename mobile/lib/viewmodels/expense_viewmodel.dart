@@ -14,14 +14,6 @@ class ExpenseViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  // Update expenses list by retrieving from backend
-  Future<void> _refreshExpenses() async {
-    final loadedExpenses = await repository.getExpenses();
-    _expenses.clear();
-    _expenses.addAll(loadedExpenses);
-    _expenses.sort((a, b) => b.date.compareTo(a.date));
-  }
-
   Future<void> loadExpenses() async {
     _isLoading = true;
     notifyListeners();
@@ -35,8 +27,8 @@ class ExpenseViewModel extends ChangeNotifier {
       _errorMessage = 'Failed to load expenses. Please check your connection.';
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> addExpense(
@@ -127,14 +119,6 @@ class ExpenseViewModel extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
-    }
-  }
-
-  Expense? getExpenseById(String id) {
-    try {
-      return _expenses.firstWhere((e) => e.id == id);
-    } catch (e) {
-      return null;
     }
   }
 }

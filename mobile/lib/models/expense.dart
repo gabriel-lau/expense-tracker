@@ -23,7 +23,7 @@ class Expense {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       if (id != null) 'id': id,
-      'description': description,
+      'description': description.trim(),
       'amount': amount,
       'date': date.toUtc().toIso8601String(),
     };

@@ -28,7 +28,9 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
     super.initState();
     final vm = Provider.of<ExpenseViewModel>(context, listen: false);
     _isEdit = widget.expenseId != null;
-    _expense = _isEdit ? vm.getExpenseById(widget.expenseId!) : null;
+    _expense = _isEdit
+        ? vm.expenses.firstWhere((e) => e.id == widget.expenseId!)
+        : null;
     _date = _expense?.date.toLocal() ?? DateTime.now();
   }
 
@@ -48,7 +50,9 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                 initialValue: _expense?.description ?? '',
                 decoration: const InputDecoration(labelText: 'Description'),
                 validator: (value) =>
-                    value == null || value.isEmpty ? 'Enter description' : null,
+                    value == null || value.isEmpty || value.trim().isEmpty
+                    ? 'Enter description'
+                    : null,
                 onSaved: (value) => _description = value!,
               ),
               TextFormField(
