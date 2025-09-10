@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart'; // Provider with ChangeNotifier - Automatic rebuilds of UI on data change so we don't have to use setState
 import '../viewmodels/expense_viewmodel.dart';
 
+// PRESENTATION LAYER
 class ExpenseListPage extends StatefulWidget {
   const ExpenseListPage({super.key});
 

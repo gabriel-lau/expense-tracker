@@ -16,11 +16,14 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+      //  View Model with Dependency Injection
       create: (_) => ExpenseViewModel(
         repository: ExpenseRepositoryApiImpl(
           ExpenseApiDataSource(baseUrl: BASE_URL),
         ),
       ),
+
+      // UI - MaterialApp with ExpenseListPage as home
       child: MaterialApp(
         title: 'Expense Tracker',
         theme: ThemeData(primarySwatch: Colors.blue),

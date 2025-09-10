@@ -4,18 +4,17 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/expense_viewmodel.dart';
 
-// The widget that uses AddEditExpensePage has no visibility into the underlying values and no means to access or change it.
+// PRESENTATION LAYER
 class AddEditExpensePage extends StatefulWidget {
   final String? expenseId;
   const AddEditExpensePage({super.key, this.expenseId});
 
-  // The _AddEditExpensePageState is created the first time that AddEditExpensePage is built, and exist until it's removed from the screen.
-  // This is an example of ephemeral state.
   @override
   State<AddEditExpensePage> createState() => _AddEditExpensePageState();
 }
 
 class _AddEditExpensePageState extends State<AddEditExpensePage> {
+  // Ephemeral state - UI state that is not persisted or shared, e.g., form fields
   final _formKey = GlobalKey<FormState>();
   late String _description;
   late double _amount;

@@ -2,18 +2,22 @@ import 'package:expense_tracker/repositories/expense_repository.dart';
 import '../models/expense.dart';
 import 'package:flutter/material.dart';
 
+// PRESENTATION LAYER - ViewModel with ChangeNotifier, Notify listeners (UI) on data change
 class ExpenseViewModel extends ChangeNotifier {
   final ExpenseRepository repository;
   ExpenseViewModel({required this.repository});
 
+  // Private
   final List<Expense> _expenses = [];
   String? _errorMessage;
   bool _isLoading = false;
 
+  // Public - Unmodifiable view of the expenses list, loading state, and error message
   List<Expense> get expenses => List.unmodifiable(_expenses);
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // Triggered when the ExpenseListPage is first created and when the user pulls to refresh
   Future<void> loadExpenses() async {
     _isLoading = true;
     notifyListeners();
@@ -31,6 +35,8 @@ class ExpenseViewModel extends ChangeNotifier {
     }
   }
 
+  // Triggered in AddEditExpensePage when the user adds an expense.
+  // Optimistic UI updates for add
   Future<void> addExpense(
     String description,
     double amount,
@@ -65,6 +71,8 @@ class ExpenseViewModel extends ChangeNotifier {
     }
   }
 
+  // Triggered in AddEditExpensePage when the user edits an expense.
+  // Optimistic UI updates for edit
   Future<void> editExpense(
     String id,
     String description,
@@ -100,6 +108,8 @@ class ExpenseViewModel extends ChangeNotifier {
     }
   }
 
+  // Triggered in ExpenseListPage when the user swipes to delete an expense.
+  // Optimistic UI updates for delete
   Future<void> deleteExpense(String id) async {
     // Optimistically remove the expense
     _isLoading = true;

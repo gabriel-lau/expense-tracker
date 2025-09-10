@@ -2,6 +2,7 @@ import '../models/expense.dart';
 import '../data/expense_api_data_source.dart';
 import 'expense_repository.dart';
 
+//  DOMAIN LAYER - Repository Implementation
 class ExpenseRepositoryApiImpl implements ExpenseRepository {
   final ExpenseApiDataSource dataSource; // Dependency Injection
 

@@ -1,3 +1,4 @@
+// DOMAIN LAYER - Model
 class Expense {
   String? id;
   String description;
