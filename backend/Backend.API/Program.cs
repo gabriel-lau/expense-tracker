@@ -1,35 +1,27 @@
-using backend.Data;
-using Microsoft.EntityFrameworkCore;
+using Backend.Application;
+using Backend.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-// Add controllers 
 builder.Services.AddControllers();
 
-// Configure PostgreSQL with Entity Framework Core
-builder.Services.AddDbContext<ExpenseDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ExpenseDb")));
-
-// Add Swagger services
+// Add services to the container.
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped < IExpenseRepository, ExpenseRepository > ();
+builder.Services.AddScoped < IExpenseService, ExpenseService > ();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // Enable Swagger in development
+    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
