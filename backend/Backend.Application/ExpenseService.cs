@@ -1,5 +1,5 @@
 using System;
-using Backend.Domain;
+using Backend.Domain.Models;
 
 namespace Backend.Application;
 
@@ -15,11 +15,6 @@ public class ExpenseService : IExpenseService
     public async Task<List<Expense>> GetAllExpenses()
     {
         return await _expenseRepository.GetAllExpenses();
-    }
-
-    public async Task<Expense?> GetExpenseById(Guid id)
-    {
-        return await _expenseRepository.GetExpenseById(id);
     }
 
     public async Task<Expense> CreateExpense(Expense expense)

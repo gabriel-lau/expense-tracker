@@ -1,6 +1,6 @@
 using System;
 using Backend.Application;
-using Backend.Domain;
+using Backend.Domain.Models;
 
 namespace Backend.Infrastructure;
 
@@ -16,12 +16,6 @@ public class ExpenseListRepository : IExpenseRepository
     public Task<List<Expense>> GetAllExpenses()
     {
         return Task.FromResult(expensesList);
-    }
-
-    public Task<Expense?> GetExpenseById(Guid id)
-    {
-        var expense = expensesList.FirstOrDefault(e => e.Id == id);
-        return Task.FromResult(expense);
     }
 
     public Task<Expense> CreateExpense(Expense expense)

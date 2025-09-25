@@ -1,6 +1,6 @@
 using System;
 using Backend.Application;
-using Backend.Domain;
+using Backend.Domain.Models;
 using Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,11 +20,6 @@ public class ExpenseDbRepository : IExpenseRepository
             return await _context.Expenses
                 .OrderByDescending(e => e.Date)
                 .ToListAsync();
-        }
-
-        public async Task<Expense?> GetExpenseById(Guid id)
-        {
-            return await _context.Expenses.FindAsync(id);
         }
 
         public async Task<Expense> CreateExpense(Expense expense)
