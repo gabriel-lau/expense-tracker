@@ -1,7 +1,8 @@
 using System;
 using Backend.Domain.Models;
+using Backend.Application.Interfaces;
 
-namespace Backend.Application;
+namespace Backend.Application.Services;
 
 public class ExpenseService : IExpenseService
 {

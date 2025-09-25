@@ -1,4 +1,4 @@
-using Backend.Application;
+using Backend.Application.Interfaces;
 using Backend.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

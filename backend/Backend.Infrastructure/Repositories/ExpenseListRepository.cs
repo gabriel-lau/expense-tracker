@@ -1,8 +1,8 @@
 using System;
-using Backend.Application;
+using Backend.Application.Interfaces;
 using Backend.Domain.Models;
 
-namespace Backend.Infrastructure;
+namespace Backend.Infrastructure.Repositories;
 
 public class ExpenseListRepository : IExpenseRepository
 {

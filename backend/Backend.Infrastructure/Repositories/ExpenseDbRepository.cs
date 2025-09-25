@@ -1,10 +1,10 @@
 using System;
-using Backend.Application;
+using Backend.Application.Interfaces;
 using Backend.Domain.Models;
 using Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Infrastructure;
+namespace Backend.Infrastructure.Repositories;
 
 public class ExpenseDbRepository : IExpenseRepository
 {

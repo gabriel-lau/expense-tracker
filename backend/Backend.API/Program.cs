@@ -1,5 +1,6 @@
-using Backend.Application;
-using Backend.Infrastructure;
+using Backend.Application.Interfaces;
+using Backend.Application.Services;
+using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
