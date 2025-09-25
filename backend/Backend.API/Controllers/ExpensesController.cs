@@ -24,7 +24,7 @@ namespace Backend.API.Controllers
             return Ok(expenses);
         }
 
-        // POST api/<MembersController>
+        // POST api/<ExpensesController>
                 // POST: api/expenses
         [HttpPost]
         public async Task<ActionResult<ExpenseDto>> CreateExpense(CreateExpenseDto createExpenseDto)
