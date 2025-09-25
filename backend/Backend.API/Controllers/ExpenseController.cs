@@ -17,9 +17,10 @@ namespace Backend.API.Controllers
         }
         // GET: api/<MembersController>
         [HttpGet]
-        public ActionResult<IList<Expense>> Get()
+        public async Task<ActionResult<IList<Expense>>> Get()
         {
-            return Ok(this.expenseService.GetAllExpenses());
+            var expenses = await this.expenseService.GetAllExpenses();
+            return Ok(expenses);
         }
     }
 }

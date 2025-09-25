@@ -5,5 +5,5 @@ namespace Backend.Application;
 
 public interface IExpenseService
 {
-        List<Expense> GetAllExpenses();
+        Task<List<Expense>> GetAllExpenses();
 }
