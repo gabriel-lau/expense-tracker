@@ -3,6 +3,7 @@ import '../data/expense_api_data_source.dart';
 import 'expense_repository.dart';
 
 //  DOMAIN LAYER - Repository Implementation
+// SharedPreferences would go here for local storage implementation
 class ExpenseRepositoryApiImpl implements ExpenseRepository {
   final ExpenseApiDataSource dataSource; // Dependency Injection
 

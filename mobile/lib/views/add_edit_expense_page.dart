@@ -1,5 +1,6 @@
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/expense_viewmodel.dart';
@@ -57,6 +58,9 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
               TextFormField(
                 initialValue: _expense?.amount.toString() ?? '',
                 decoration: const InputDecoration(labelText: 'Amount'),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+                ],
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Enter amount';
