@@ -20,6 +20,12 @@ builder.Services.AddScoped < IExpenseRepository, ExpenseDbRepository > ();
 builder.Services.AddScoped < IExpenseService, ExpenseService > ();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ExpenseDbContext>();
+    context.Database.Migrate(); // This applies pending migrations
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
