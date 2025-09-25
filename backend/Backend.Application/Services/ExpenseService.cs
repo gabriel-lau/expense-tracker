@@ -1,7 +1,7 @@
 using System;
-using Backend.Domain.Models;
-using Backend.Application.Interfaces;
 using Backend.Application.DTOs;
+using Backend.Application.Interfaces;
+using Backend.Domain.Models;
 
 namespace Backend.Application.Services;
 
@@ -53,7 +53,7 @@ public class ExpenseService : IExpenseService
         return await _expenseRepository.DeleteExpense(id);
     }
 
-        private static ExpenseDto MapToDto(Expense expense)
+    private static ExpenseDto MapToDto(Expense expense)
     {
         return new ExpenseDto
         {

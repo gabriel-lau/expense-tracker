@@ -7,12 +7,37 @@ namespace Backend.Infrastructure.Repositories;
 public class ExpenseListRepository : IExpenseRepository
 {
     public static List<Expense> expensesList = new List<Expense>()
+    {
+        new Expense
         {
-           new Expense{  Id = Guid.NewGuid(), Description= "Office Supplies", Amount= 100.00M, Date= DateTime.Now},
-           new Expense{  Id = Guid.NewGuid(), Description= "Travel", Amount= 500.00M, Date= DateTime.Now},
-           new Expense{  Id = Guid.NewGuid(), Description= "Meals", Amount= 200.00M, Date= DateTime.Now},
-           new Expense{  Id = Guid.NewGuid(), Description= "Utilities", Amount= 300.00M, Date= DateTime.Now}
-        };
+            Id = Guid.NewGuid(),
+            Description = "Office Supplies",
+            Amount = 100.00M,
+            Date = DateTime.Now,
+        },
+        new Expense
+        {
+            Id = Guid.NewGuid(),
+            Description = "Travel",
+            Amount = 500.00M,
+            Date = DateTime.Now,
+        },
+        new Expense
+        {
+            Id = Guid.NewGuid(),
+            Description = "Meals",
+            Amount = 200.00M,
+            Date = DateTime.Now,
+        },
+        new Expense
+        {
+            Id = Guid.NewGuid(),
+            Description = "Utilities",
+            Amount = 300.00M,
+            Date = DateTime.Now,
+        },
+    };
+
     public Task<List<Expense>> GetAllExpenses()
     {
         return Task.FromResult(expensesList);
@@ -24,6 +49,7 @@ public class ExpenseListRepository : IExpenseRepository
         expensesList.Add(expense);
         return Task.FromResult(expense);
     }
+
     public Task<bool> UpdateExpense(Expense expense)
     {
         var existingExpense = expensesList.FirstOrDefault(e => e.Id == expense.Id);
@@ -35,6 +61,7 @@ public class ExpenseListRepository : IExpenseRepository
         existingExpense.Date = expense.Date;
         return Task.FromResult(true);
     }
+
     public Task<bool> DeleteExpense(Guid id)
     {
         var expense = expensesList.FirstOrDefault(e => e.Id == id);

@@ -1,7 +1,7 @@
 using Backend.Application.Interfaces;
 using Backend.Application.Services;
-using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Data;
+using Backend.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,10 +14,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ExpenseDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
-builder.Services.AddScoped < IExpenseRepository, ExpenseDbRepository > ();
-builder.Services.AddScoped < IExpenseService, ExpenseService > ();
+builder.Services.AddScoped<IExpenseRepository, ExpenseDbRepository>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

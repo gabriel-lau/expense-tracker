@@ -16,6 +16,7 @@ namespace Backend.API.Controllers
         {
             this.expenseService = expenseService;
         }
+
         // GET: api/<MembersController>
         [HttpGet]
         public async Task<ActionResult<IList<ExpenseDto>>> Get()
@@ -25,7 +26,7 @@ namespace Backend.API.Controllers
         }
 
         // POST api/<ExpensesController>
-                // POST: api/expenses
+        // POST: api/expenses
         [HttpPost]
         public async Task<ActionResult<ExpenseDto>> CreateExpense(CreateExpenseDto createExpenseDto)
         {

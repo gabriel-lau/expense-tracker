@@ -6,9 +6,8 @@ namespace Backend.Application.Interfaces;
 
 public interface IExpenseService
 {
-        Task<List<ExpenseDto>> GetAllExpenses();
-        Task<ExpenseDto> CreateExpense(CreateExpenseDto expense);
-        Task<bool> UpdateExpense(UpdateExpenseDto expense);
-        Task<bool> DeleteExpense(Guid id);
-
+    Task<List<ExpenseDto>> GetAllExpenses();
+    Task<ExpenseDto> CreateExpense(CreateExpenseDto expense);
+    Task<bool> UpdateExpense(UpdateExpenseDto expense);
+    Task<bool> DeleteExpense(Guid id);
 }
