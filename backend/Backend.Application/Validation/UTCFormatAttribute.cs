@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.Validation
+namespace Backend.Application.Validation
 {
     public class UTCFormatAttribute : ValidationAttribute
     {

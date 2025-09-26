@@ -1,0 +1,30 @@
+@API_HostAddress = http://localhost:5165
+@contentType = application/json
+
+### Get all expenses
+GET {{API_HostAddress}}/api/expenses
+Accept: {{contentType}}
+
+### Create new expense
+POST {{API_HostAddress}}/api/expenses
+Content-Type: {{contentType}}
+
+{
+  "description": "Lunch at restaurant",
+  "amount": 25.50,
+  "date": "2025-09-25T12:00:00Z"
+}
+
+### Update expense
+PUT {{API_HostAddress}}/api/expenses/123e4567-e89b-12d3-a456-426614174000
+Content-Type: {{contentType}}
+
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "description": "Updated lunch expense",
+  "amount": 28.00,
+  "date": "2025-09-25T12:00:00Z"
+}
+
+### Delete expense
+DELETE {{API_HostAddress}}/api/expenses/123e4567-e89b-12d3-a456-426614174000

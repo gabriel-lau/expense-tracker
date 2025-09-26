@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+README.md
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Visual Studio
+.vs/
+.vscode/
+
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+
+# NuGet
+packages/
+*.nupkg
+.nuget/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# Temporary files
+*.tmp
+*.temp
